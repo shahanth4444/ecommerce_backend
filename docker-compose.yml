@@ -1,0 +1,40 @@
+
+services:
+  # 1. Database (PostgreSQL)
+  db:
+    image: postgres:15
+    container_name: ecommerce_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=ecommerce
+    ports:
+      - "5432:5432"
+
+  # 2. Cache (Redis)
+  redis:
+    image: redis:alpine
+    container_name: ecommerce_redis
+    ports:
+      - "6379:6379"
+
+  # 3. Backend API (FastAPI)
+  web:
+    build: .
+    container_name: ecommerce_api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://user:password@db/ecommerce
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
