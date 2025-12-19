@@ -69,7 +69,7 @@ Steps to Run
 
 **1.Clone the Repository**
 ```Bash
-git clone [https://github.com/shahanth4444/ecommerce_backend.git](https://github.com/shahanth4444/ecommerce_backend.git)
+git clone https://github.com/shahanth4444/ecommerce_backend.git
 cd ecommerce_backend
 ```
 
